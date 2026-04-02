@@ -1,17 +1,14 @@
 import express from "express";
-import bcrypt from "bcryptjs";
-import db from "../db/index.js";
-import "dotenv/config";
+import { UserController } from "../controller/user.controller.js";
 
 const authRoutes = express.Router();
 
-const cookieOptions = {
-  httpOnly: true,
-  secure: process.env.NODE_ENV === "production",
-  sameSite: "strict" as const,
-  maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
-};
 
+authRoutes.post("/login", UserController.loginUser);
+authRoutes.post("/register", UserController.createUser);
+authRoutes.post("/logout", UserController.logoutUser);
+
+export default authRoutes;
 
 
 
