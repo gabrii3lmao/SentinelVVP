@@ -1,4 +1,3 @@
-import { min } from "drizzle-orm";
 import { z } from "zod";
 
 export const createDomainSchema = z.object({

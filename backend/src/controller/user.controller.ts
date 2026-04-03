@@ -2,7 +2,7 @@ import type { Request, Response } from "express";
 import db from "../db/index.js";
 import { users } from "../db/schema.js";
 import bcrypt from "bcryptjs";
-import { generateToken } from "../service/jwtService.js";
+import { generateToken } from "../service/jwt.service.js";
 import { createUserSchema, loginUserSchema } from "../dtos/user.dto.js";
 import { eq } from "drizzle-orm";
 import { z } from "zod";
@@ -25,7 +25,7 @@ export class UserController {
       const existingUser = await db
         .select()
         .from(users)
-        .where(eq(users.email, email))
+        .where(eq(users.email, email));
 
       if (existingUser.length > 0) {
         return res.status(400).json({ message: "Email já registrado" });

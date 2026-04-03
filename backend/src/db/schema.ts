@@ -25,6 +25,7 @@ export const domains = pgTable("Domains", {
     .references(() => users.id),
   url: varchar("url", { length: 255 }).notNull(),
   checkInterval: integer("check_interval").notNull().default(60), // in seconds
+  timeout: integer("timeout").notNull().default(5000), // in milliseconds
   status: varchar("status", { length: 20 }).default("pending").notNull(),
   lastChecked: timestamp("last_checked"),
   isActive: boolean("is_active").default(true).notNull(),

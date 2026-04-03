@@ -1,0 +1,1 @@
+ALTER TABLE "Domains" ADD COLUMN "timeout" integer DEFAULT 5000 NOT NULL;
