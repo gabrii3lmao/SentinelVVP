@@ -12,7 +12,7 @@ const idParamSchema = z.object({
 export class DomainController {
   static async createDomain(req: Request, res: Response) {
     try {
-      const { url, checkInterval } = createDomainSchema.parse(req.body);
+      const { url, checkInterval, timeout } = createDomainSchema.parse(req.body);
 
       const userId = req.user?.id;
 
@@ -35,6 +35,7 @@ export class DomainController {
           userid: userId,
           url,
           checkInterval,
+          timeout,
         })
         .returning();
 
@@ -100,7 +101,7 @@ export class DomainController {
   static async updateDomain(req: Request, res: Response) {
     try {
       const id = idParamSchema.parse(req.params).id;
-      const { url, checkInterval } = createDomainSchema.parse(req.body);
+      const { url, checkInterval, timeout } = createDomainSchema.parse(req.body);
       const userId = req.user?.id;
 
       if (!userId) {
@@ -109,7 +110,7 @@ export class DomainController {
 
       const [updatedDomain] = await db
         .update(domains)
-        .set({ url, checkInterval })
+        .set({ url, checkInterval, timeout })
         .where(and(eq(domains.id, id), eq(domains.userid, userId)))
         .returning();
 
