@@ -6,7 +6,7 @@ import { eq } from "drizzle-orm";
 export class MonitorService {
   constructor(private strategy: IMonitorStrategy) {}
 
-  async runChecks(userId: string) {
+  async runChecksHttp(userId: string) {
     const allDomains = await db
       .select()
       .from(domains)
