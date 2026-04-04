@@ -22,7 +22,7 @@ O sistema é dividido em três partes principais:
 ## Tecnologias
 
 - **Backend:** Node.js (Express + TypeScript), PostgreSQL, Redis, BullMQ  
-- **Worker:** C# (.NET)  
+- **Worker:** Axios (Para testes de uptime)
 - **Frontend:** Vue 3 (Vite), Tailwind CSS, Chart.js / ApexCharts  
 
 ## Objetivo
