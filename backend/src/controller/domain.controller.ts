@@ -1,5 +1,5 @@
 import type { Request, Response } from "express";
-import { domains } from "../db/schema.js";
+import { domains, logs } from "../db/schema.js";
 import { createDomainSchema } from "../dtos/domains.dto.js";
 import db from "../db/index.js";
 import { eq, and } from "drizzle-orm";
@@ -12,7 +12,9 @@ const idParamSchema = z.object({
 export class DomainController {
   static async createDomain(req: Request, res: Response) {
     try {
-      const { url, checkInterval, timeout } = createDomainSchema.parse(req.body);
+      const { url, checkInterval, timeout } = createDomainSchema.parse(
+        req.body,
+      );
 
       const userId = req.user?.id;
 
@@ -101,7 +103,9 @@ export class DomainController {
   static async updateDomain(req: Request, res: Response) {
     try {
       const id = idParamSchema.parse(req.params).id;
-      const { url, checkInterval, timeout } = createDomainSchema.parse(req.body);
+      const { url, checkInterval, timeout } = createDomainSchema.parse(
+        req.body,
+      );
       const userId = req.user?.id;
 
       if (!userId) {
@@ -127,6 +131,38 @@ export class DomainController {
       }
       console.error(error);
       return res.status(500).json({ message: "Error updating domain", error });
+    }
+  }
+
+  static async getLogs(req: Request, res: Response) {
+    try {
+      const id = idParamSchema.parse(req.params).id;
+      const userId = req.user?.id;
+
+      if (!userId) {
+        return res.status(401).json({ message: "Unauthorized" });
+      }
+
+      const domainOwnership = await db
+        .select()
+        .from(domains)
+        .where(and(eq(domains.id, id), eq(domains.userid, userId)));
+
+      if (domainOwnership.length === 0) {
+        return res
+          .status(403)
+          .json({ message: "Domain not found or unauthorized" });
+      }
+
+      const domainLogs = await db
+        .select()
+        .from(logs)
+        .where(eq(logs.domainId, id));
+
+        
+      return res.status(200).json(domainLogs);
+    } catch (error) {
+      return res.status(500).json({ message: "Error fetching logs", error });
     }
   }
 }
