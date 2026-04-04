@@ -2,11 +2,21 @@ import cron from "node-cron";
 import db from "../db/index.js";
 import { domains } from "../db/schema.js";
 import { monitorQueue } from "../queues/monitorQueue.js";
+import { isNull, or, sql, eq } from "drizzle-orm";
 
-cron.schedule("* * * * *", async () => {
-  const allDomains = await db.select().from(domains);
+cron.schedule("*/10 * * * * *", async () => {
 
-  for (const domain of allDomains) {
+  const domainsToCheck = await db
+    .select()
+    .from(domains)
+    .where(
+      or(
+        isNull(domains.lastChecked),
+        sql`${domains.lastChecked} + (${domains.checkInterval} || ' seconds')::interval <= NOW()`,
+      ),
+    );
+
+  for (const domain of domainsToCheck) {
     await monitorQueue.add(
       "check-domain",
       {
@@ -24,5 +34,10 @@ cron.schedule("* * * * *", async () => {
         removeOnFail: false,
       },
     );
+
+    await db
+      .update(domains)
+      .set({ lastChecked: sql`NOW()` })
+      .where(eq(domains.id, domain.id));
   }
 });

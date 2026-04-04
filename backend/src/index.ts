@@ -7,11 +7,10 @@ import router from "./routes/router.js";
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-
 const corsOptions: cors.CorsOptions = {
   origin: "http://localhost:5173",
-  credentials: true
-}
+  credentials: true,
+};
 
 app.use(cors(corsOptions));
 app.use(express.json());

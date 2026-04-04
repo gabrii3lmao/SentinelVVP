@@ -3,7 +3,7 @@ import { redisConfig } from "../config/redis.js";
 import { AxiosMonitorStrategy } from "../service/monitor/AxiosStrategy.js";
 import db from "../db/index.js";
 import { logs, domains } from "../db/schema.js";
-import { eq } from "drizzle-orm";
+import { eq, sql } from "drizzle-orm";
 
 const strategy = new AxiosMonitorStrategy();
 
@@ -28,7 +28,7 @@ const worker = new Worker(
       .update(domains)
       .set({
         status: "up",
-        lastChecked: new Date(),
+        lastChecked: sql`NOW()`,
       })
       .where(eq(domains.id, domainId));
 
@@ -55,8 +55,8 @@ worker.on("failed", async (job, err) => {
       .update(domains)
       .set({
         status: "down",
-        isActive: false,
-        lastChecked: new Date(),
+        // isActive: false,
+        lastChecked: sql`NOW()`,
       })
       .where(eq(domains.id, domainId));
   }
