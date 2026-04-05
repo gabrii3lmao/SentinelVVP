@@ -1,8 +1,10 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import { useAuthStore } from '@/stores/auth'
-import DashbordLayout from '@/components/layout/DashbordLayout.vue'
+
+import DashboardLayout from '@/components/layout/DashboardLayout.vue'
 import RegisterView from '@/views/RegisterView.vue'
 import LoginView from '@/views/LoginView.vue'
+import TopBar from '@/components/layout/TopBar.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -21,13 +23,23 @@ const router = createRouter({
     },
     {
       path: '/',
-      component: DashbordLayout,
+      component: DashboardLayout,
       meta: { requiresAuth: true },
       children: [
         {
           path: '',
           name: 'dashboard',
-          component: () => import('@/views/DashboardView.vue'),
+          // Usamos 'components' no plural aqui!
+          components: {
+            default: () => import('@/views/DashboardView.vue'),
+            topbar: TopBar,
+          },
+        },
+        {
+          path: 'about',
+          name: 'about',
+          // Como aqui usamos 'component' no singular, a topbar não é montada.
+          component: () => import('@/views/AboutView.vue'),
         },
       ],
     },
