@@ -3,9 +3,15 @@
     <div class="w-full max-w-md bg-[#2a2a2a] border border-support/20 rounded-xl shadow-2xl p-8">
       <div class="text-center mb-8">
         <h1 class="text-3xl font-bold text-light mb-2">Login</h1>
-        <p class="text-support text-sm">Monitoramento de uptime simples e eficiente.</p>
+        <p class="text-support text-sm">Gerencie e monitore seus serviços em um só lugar.</p>
       </div>
 
+      <div
+        v-if="errorMessage"
+        class="mb-4 px-4 py-2 rounded-lg border border-red-500/20 bg-red-500/10 text-red-400 text-sm"
+      >
+        {{ errorMessage }}
+      </div>
       <form @submit.prevent="handleSubmit" class="space-y-6">
         <div>
           <label class="block text-sm font-medium text-support mb-1">E-mail</label>
@@ -34,27 +40,11 @@
           :disabled="isLoading"
           class="w-full bg-primary hover:bg-secondary text-light font-medium py-2.5 rounded-lg transition-colors flex justify-center items-center disabled:opacity-70"
         >
-          <svg
+          <i
             v-if="isLoading"
-            class="animate-spin -ml-1 mr-3 h-5 w-5 text-white"
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 24 24"
-          >
-            <circle
-              class="opacity-25"
-              cx="12"
-              cy="12"
-              r="10"
-              stroke="currentColor"
-              stroke-width="4"
-            />
-            <path
-              class="opacity-75"
-              fill="currentColor"
-              d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"
-            />
-          </svg>
+            class="pi pi-spinner animate-spin -ml-1 mr-3 text-white"
+            style="font-size: 1.25rem"
+          ></i>
           Entrar
         </button>
       </form>
@@ -85,6 +75,8 @@ const form = reactive({
   password: '',
 })
 
+const errorMessage = ref<string | null>(null)
+
 const handleSubmit = async () => {
   isLoading.value = true
   try {
@@ -94,8 +86,9 @@ const handleSubmit = async () => {
     })
 
     router.push({ name: 'dashboard' })
-  } catch (error) {
-    alert('Erro na autenticação. Verifique suas credenciais.')
+  } catch (error: any) {
+    errorMessage.value =
+      error?.response?.data?.message || 'Erro na autenticação. Verifique suas credenciais.'
   } finally {
     isLoading.value = false
   }

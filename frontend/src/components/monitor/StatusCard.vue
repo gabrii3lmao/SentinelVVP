@@ -1,3 +1,40 @@
+<script setup lang="ts">
+import { computed } from 'vue'
+import type { Domain } from '@/types/domain'
+
+const props = defineProps<{
+  domain: Domain
+}>()
+
+const statusStyles = computed(() => {
+  switch (props.domain.status) {
+    case 'up':
+      return {
+        text: 'Online',
+        bgClass: 'bg-green-500/10 border-green-500/20 text-green-400',
+        dotClass: 'bg-green-400 animate-pulse',
+      }
+    case 'down':
+      return {
+        text: 'Offline',
+        bgClass: 'bg-red-500/10 border-red-500/20 text-red-400',
+        dotClass: 'bg-red-400 animate-ping',
+      }
+    case 'pending':
+    default:
+      return {
+        text: 'Pendente',
+        bgClass: 'bg-support/10 border-support/20 text-support',
+        dotClass: 'bg-support',
+      }
+  }
+})
+
+function formatDate(date: string) {
+  return new Date(date).toLocaleString()
+}
+</script>
+
 <template>
   <div
     class="bg-[#2a2a2a] border border-support/10 rounded-xl p-5 hover:border-primary/50 hover:shadow-lg hover:shadow-primary/10 transition-all duration-200 group"
@@ -64,40 +101,3 @@
     </div>
   </div>
 </template>
-
-<script setup lang="ts">
-import { computed } from 'vue'
-import type { Domain } from '@/types/domain'
-
-const props = defineProps<{
-  domain: Domain
-}>()
-
-const statusStyles = computed(() => {
-  switch (props.domain.status) {
-    case 'up':
-      return {
-        text: 'Online',
-        bgClass: 'bg-green-500/10 border-green-500/20 text-green-400',
-        dotClass: 'bg-green-400 animate-pulse',
-      }
-    case 'down':
-      return {
-        text: 'Offline',
-        bgClass: 'bg-red-500/10 border-red-500/20 text-red-400',
-        dotClass: 'bg-red-400 animate-ping',
-      }
-    case 'pending':
-    default:
-      return {
-        text: 'Pendente',
-        bgClass: 'bg-support/10 border-support/20 text-support',
-        dotClass: 'bg-support',
-      }
-  }
-})
-
-function formatDate(date: string) {
-  return new Date(date).toLocaleString()
-}
-</script>

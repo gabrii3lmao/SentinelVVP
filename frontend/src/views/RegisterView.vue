@@ -1,9 +1,62 @@
+<script setup lang="ts">
+import { ref, reactive, computed } from 'vue'
+import { useRouter } from 'vue-router'
+import { useAuthStore } from '@/stores/auth'
+
+const router = useRouter()
+const authStore = useAuthStore()
+
+const isLoading = ref(false)
+
+const form = reactive({
+  name: '',
+  email: '',
+  password: '',
+  confirmPassword: '',
+})
+
+const passwordMismatch = computed(() => {
+  return (
+    form.password !== '' && form.confirmPassword !== '' && form.password !== form.confirmPassword
+  )
+})
+
+const errorMessage = ref<string | null>(null)
+
+const handleRegister = async () => {
+  if (passwordMismatch.value) return
+
+  isLoading.value = true
+  try {
+    await authStore.register({
+      name: form.name,
+      email: form.email,
+      password: form.password,
+    })
+
+    router.push({ name: 'dashboard' })
+  } catch (error: any) {
+    errorMessage.value =
+      error?.response?.data?.message || 'Erro na autenticação. Verifique suas credenciais.'
+  } finally {
+    isLoading.value = false
+  }
+}
+</script>
+
 <template>
   <div class="min-h-screen bg-dark flex items-center justify-center p-4">
     <div class="w-full max-w-md bg-[#2a2a2a] border border-support/20 rounded-xl shadow-2xl p-8">
       <div class="text-center mb-8">
         <h1 class="text-3xl font-bold text-light mb-2">Criar Conta</h1>
-        <p class="text-support text-sm">Comece a monitorar seus serviços em segundos.</p>
+        <p class="text-support text-sm">Monitore seus serviços e receba alertas em tempo real.</p>
+      </div>
+
+      <div
+        v-if="errorMessage"
+        class="mb-4 px-4 py-2 rounded-lg border border-red-500/20 bg-red-500/10 text-red-400 text-sm"
+      >
+        {{ errorMessage }}
       </div>
 
       <form @submit.prevent="handleRegister" class="space-y-5">
@@ -94,47 +147,3 @@
     </div>
   </div>
 </template>
-
-<script setup lang="ts">
-import { ref, reactive, computed } from 'vue'
-import { useRouter } from 'vue-router'
-import { useAuthStore } from '@/stores/auth'
-
-const router = useRouter()
-const authStore = useAuthStore()
-
-const isLoading = ref(false)
-
-const form = reactive({
-  name: '',
-  email: '',
-  password: '',
-  confirmPassword: '',
-})
-
-const passwordMismatch = computed(() => {
-  return (
-    form.password !== '' && form.confirmPassword !== '' && form.password !== form.confirmPassword
-  )
-})
-
-const handleRegister = async () => {
-  if (passwordMismatch.value) return
-
-  isLoading.value = true
-  try {
-    await authStore.register({
-      name: form.name,
-      email: form.email,
-      password: form.password,
-    })
-
-    router.push({ name: 'dashboard' })
-  } catch (error) {
-    console.error(error)
-    alert('Erro ao realizar cadastro.')
-  } finally {
-    isLoading.value = false
-  }
-}
-</script>

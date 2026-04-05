@@ -51,7 +51,7 @@ export class UserController {
       if (error instanceof z.ZodError) {
         return res
           .status(400)
-          .json({ message: "Dados inválidos", errors: error });
+          .json({ message: "Erro de validação nos dados enviados", errors: error });
       }
       return res.status(500).json({ message: "Erro ao criar usuário", error });
     }
@@ -89,7 +89,7 @@ export class UserController {
       if (error instanceof z.ZodError) {
         return res
           .status(400)
-          .json({ message: "Dados inválidos", errors: error });
+          .json({ message: "Erro de validação nos dados enviados", errors: error });
       }
       return res.status(500).json({ message: "Erro ao fazer login", error });
     }

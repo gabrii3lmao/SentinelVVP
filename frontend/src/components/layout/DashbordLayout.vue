@@ -1,12 +1,29 @@
+<script setup lang="ts">
+import { useRouter } from 'vue-router'
+import { useAuthStore } from '@/stores/auth'
+
+const router = useRouter()
+const authStore = useAuthStore()
+
+const handleLogout = () => {
+  authStore.logout()
+  router.push({ name: 'login' })
+}
+</script>
+
 <template>
   <div class="flex h-screen bg-dark text-light overflow-hidden font-sans">
     <aside
       class="w-64 bg-[#1a1a1a] border-r border-support/10 flex flex-col transition-all duration-300"
     >
       <div class="h-16 flex items-center px-6 border-b border-support/10">
-        <div class="flex items-center gap-2">
-          <div class="w-4 h-4 rounded-full bg-primary animate-pulse"></div>
-          <span class="text-xl font-bold tracking-tight">
+        <div class="flex items-center gap-4">
+          <div class="w-5 h-5 animate-pulse group">
+            <i
+              class="pi pi-slack text-[1.5rem] transition-transform duration-300 group-hover:rotate-180"
+            ></i>
+          </div>
+          <span class="text-3xl font-bold tracking-tight">
             Sentinel<span class="text-secondary">VVP</span>
           </span>
         </div>
@@ -15,19 +32,12 @@
       <nav class="flex-1 px-4 py-6 space-y-2 overflow-y-auto">
         <router-link
           to="/"
-          class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors"
+          class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sl font-medium transition-colors"
           active-class="bg-primary/10 text-primary border border-primary/20"
           exact-active-class="bg-primary/20 text-primary border border-primary/30"
           :class="[$route.path === '/' ? '' : 'text-support hover:bg-support/5 hover:text-light']"
         >
-          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="2"
-              d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"
-            ></path>
-          </svg>
+          <i class="pi pi-objects-column" style="font-size: 1.3rem"></i>
           Visão Geral
         </router-link>
       </nav>
@@ -43,17 +53,10 @@
 
           <button
             @click="handleLogout"
-            class="p-2 text-support hover:text-red-400 hover:bg-red-400/10 rounded-lg transition-colors"
+            class="p-3 text-support hover:text-red-400 hover:bg-red-400/10 rounded-lg transition-colors"
             title="Sair"
           >
-            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"
-              ></path>
-            </svg>
+            <i class="pi pi-sign-out" style="font-size: 1.2rem"></i>
           </button>
         </div>
       </div>
@@ -82,19 +85,6 @@
     </main>
   </div>
 </template>
-
-<script setup lang="ts">
-import { useRouter } from 'vue-router'
-import { useAuthStore } from '@/stores/auth'
-
-const router = useRouter()
-const authStore = useAuthStore()
-
-const handleLogout = () => {
-  authStore.logout()
-  router.push({ name: 'login' })
-}
-</script>
 
 <style scoped>
 /* Transição suave entre páginas internas */
