@@ -2,6 +2,7 @@ import { createRouter, createWebHistory } from 'vue-router'
 import { useAuthStore } from '@/stores/auth'
 import AuthView from '@/views/AuthView.vue'
 import DashbordLayout from '@/components/layout/DashbordLayout.vue'
+import RegisterView from '@/views/RegisterView.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -10,6 +11,12 @@ const router = createRouter({
       path: '/login',
       name: 'login',
       component: AuthView,
+      meta: { requiresGuest: true },
+    },
+    {
+      path: '/register',
+      name: 'register',
+      component: RegisterView,
       meta: { requiresGuest: true },
     },
     {

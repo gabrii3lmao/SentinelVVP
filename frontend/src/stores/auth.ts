@@ -2,7 +2,7 @@
 import { defineStore } from 'pinia'
 import { ref, computed } from 'vue'
 import { AuthService } from '@/services/auth.services'
-import type { LoginDTO, User } from '@/types/auth'
+import type { LoginDTO, RegisterDTO, User } from '@/types/auth'
 
 export const useAuthStore = defineStore('auth', () => {
   const token = ref<string | null>(localStorage.getItem('token'))
@@ -19,6 +19,15 @@ export const useAuthStore = defineStore('auth', () => {
     localStorage.setItem('token', data.token)
   }
 
+  async function register(data: RegisterDTO) {
+    const response = await AuthService.register(data)
+
+    token.value = response.token
+    user.value = response.user
+
+    localStorage.setItem('token', response.token)
+  }
+
   function logout() {
     token.value = null
     user.value = null
@@ -31,5 +40,6 @@ export const useAuthStore = defineStore('auth', () => {
     isAuthenticated,
     authenticate,
     logout,
+    register
   }
 })
