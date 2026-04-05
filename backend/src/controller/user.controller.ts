@@ -76,10 +76,15 @@ export class UserController {
       }
 
       const token = generateToken(user.id.toString());
-      return res
-        .status(200)
-        .cookie("token", token, cookieOptions)
-        .json({ message: "Login bem-sucedido" });
+
+      return res.status(200).json({
+        token,
+        user: {
+          id: user.id,
+          name: user.name,
+          email: user.email,
+        },
+      });
     } catch (error) {
       if (error instanceof z.ZodError) {
         return res

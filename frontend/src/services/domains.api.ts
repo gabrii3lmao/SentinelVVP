@@ -1,5 +1,5 @@
 import api from '.'
-import type { Domain, DomainLog, CreateDomainDTO } from '@/types/Domain'
+import type { Domain, DomainLog, CreateDomainDTO } from '@/types/domain'
 
 export const domainsApi = {
   create: (domain: CreateDomainDTO) => api.post('/domains', domain),
