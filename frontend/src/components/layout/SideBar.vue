@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import { useRouter } from 'vue-router'
 import { useAuthStore } from '@/stores/auth'
+import type { User } from '@/types/auth'
+import { ref } from 'vue'
 
 const router = useRouter()
 const authStore = useAuthStore()
@@ -9,6 +11,11 @@ const handleLogout = () => {
   authStore.logout()
   router.push({ name: 'login' })
 }
+
+const user = ref<User>(
+  JSON.parse(localStorage.getItem('user') || 'null')
+);
+
 </script>
 
 <template>
@@ -50,15 +57,15 @@ const handleLogout = () => {
         ]"
       >
         <i class="pi pi-megaphone" style="font-size: 1.3rem"></i>
-        About
+        Sobre
       </router-link>
     </nav>
 
     <div class="p-4 border-t border-support/10 bg-[#151515]">
       <div class="flex items-center justify-between">
         <div class="flex flex-col truncate pr-2">
-          <span class="text-sm font-medium truncate">{{ authStore.user?.name || 'Usuário' }}</span>
-          <span class="text-xs text-support truncate">{{ authStore.user?.email }}</span>
+          <span class="text-sm font-medium truncate">{{ user?.name || 'Usuário' }}</span>
+          <span class="text-xs text-support truncate">{{ user?.email }}</span>
         </div>
 
         <button

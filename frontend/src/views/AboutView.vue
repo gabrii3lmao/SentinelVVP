@@ -11,17 +11,17 @@ const faqs = [
   {
     question: "O que é considerado um 'Downtime'?",
     answer:
-      'Um downtime é registrado quando o nosso sistema recebe um código de status HTTP de erro (como 500, 502, 503) ou quando a requisição atinge o tempo limite (timeout) de 10 segundos sem resposta.',
+      'Um downtime é registrado quando o nosso sistema recebe um código de status HTTP de erro (como 500, 502, 503) ou quando a requisição atinge o tempo limite que você definiu (timeout) sem resposta.',
   },
   {
     question: 'Posso monitorar APIs que exigem autenticação?',
     answer:
-      'Sim! Na tela de cadastro do monitor, você pode definir Headers customizados (como Authorization: Bearer <token>) ou parâmetros de corpo para testar endpoints específicos da sua aplicação.',
+      'Infelizmente, ainda não é possível monitorar APIs que exigem autenticação. Porém, estamos trabalhando para adicionar suporte a autenticação básica e tokens de API em futuras atualizações.',
   },
   {
     question: 'Os dados de histórico ficam salvos por quanto tempo?',
     answer:
-      'Mantemos o registro detalhado de latência e incidentes por 30 dias para contas gratuitas e até 1 ano para contas premium. O percentual global de uptime é mantido permanentemente.',
+      'Por enquanto, mantemos os dados de histórico de uptime e latência por 30 dias. Estamos planejando oferecer opções de armazenamento prolongado em breve.',
   },
 ]
 </script>
@@ -79,7 +79,7 @@ const faqs = [
           <div
             class="w-12 h-12 bg-red-500/20 rounded-lg flex items-center justify-center text-red-400 mb-4"
           >
-           <i class="pi pi-bell" style="font-size: 1.4rem;"></i>
+           <i class="pi pi-globe" style="font-size: 1.4rem;"></i>
           </div>
           <h3 class="text-lg font-medium text-light mb-2">3. Alertas e Incidentes</h3>
           <p class="text-sm text-support/70">

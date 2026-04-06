@@ -17,6 +17,7 @@ export const useAuthStore = defineStore('auth', () => {
     user.value = data.user
 
     localStorage.setItem('token', data.token)
+    localStorage.setItem('user', JSON.stringify(data.user))
   }
 
   async function register(data: RegisterDTO) {
@@ -32,6 +33,7 @@ export const useAuthStore = defineStore('auth', () => {
     token.value = null
     user.value = null
     localStorage.removeItem('token')
+    localStorage.removeItem('user')
   }
 
   return {
