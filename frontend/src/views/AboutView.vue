@@ -29,7 +29,7 @@ const faqs = [
 <template>
   <div class="max-w-5xl mx-auto space-y-12 pb-12">
     <header class="text-center space-y-4">
-      <h1 class="text-3xl font-bold text-light">Sobre o UpMonitor</h1>
+      <h1 class="text-3xl font-bold text-light">Sobre o SentinelVVP</h1>
       <p class="text-support max-w-2xl mx-auto">
         Uma plataforma de monitoramento contínuo projetada para garantir que seus serviços, APIs e
         sites estejam sempre disponíveis para seus usuários.

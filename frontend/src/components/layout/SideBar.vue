@@ -3,6 +3,7 @@ import { useRouter } from 'vue-router'
 import { useAuthStore } from '@/stores/auth'
 import type { User } from '@/types/auth'
 import { ref } from 'vue'
+import SidebarNav from '@/components/layout/SideBarNav.vue'
 
 const router = useRouter()
 const authStore = useAuthStore()
@@ -12,10 +13,7 @@ const handleLogout = () => {
   router.push({ name: 'login' })
 }
 
-const user = ref<User>(
-  JSON.parse(localStorage.getItem('user') || 'null')
-);
-
+const user = ref<User>(JSON.parse(localStorage.getItem('user') || 'null'))
 </script>
 
 <template>
@@ -35,31 +33,7 @@ const user = ref<User>(
       </div>
     </div>
 
-    <nav class="flex-1 px-4 py-6 space-y-2 overflow-y-auto">
-      <router-link
-        to="/"
-        class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors"
-        active-class="bg-primary/10 text-primary border border-primary/20"
-        exact-active-class="bg-primary/20 text-primary border border-primary/30"
-        :class="[$route.path === '/' ? '' : 'text-support hover:bg-support/5 hover:text-light']"
-      >
-        <i class="pi pi-objects-column" style="font-size: 1.3rem"></i>
-        Visão Geral
-      </router-link>
-
-      <router-link
-        to="/about"
-        class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors"
-        active-class="bg-primary/10 text-primary border border-primary/20"
-        exact-active-class="bg-primary/20 text-primary border border-primary/30"
-        :class="[
-          $route.path === '/about' ? '' : 'text-support hover:bg-support/5 hover:text-light',
-        ]"
-      >
-        <i class="pi pi-megaphone" style="font-size: 1.3rem"></i>
-        Sobre
-      </router-link>
-    </nav>
+    <SidebarNav />
 
     <div class="p-4 border-t border-support/10 bg-[#151515]">
       <div class="flex items-center justify-between">

@@ -41,6 +41,13 @@ const router = createRouter({
           // Como aqui usamos 'component' no singular, a topbar não é montada.
           component: () => import('@/views/AboutView.vue'),
         },
+        {
+          path: 'projects',
+          name: 'projects',
+          components: {
+            default: () => import('@/views/ProjectsView.vue'),
+          },
+        },
       ],
     },
   ],
