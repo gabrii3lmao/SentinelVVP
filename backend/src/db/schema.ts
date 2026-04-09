@@ -20,9 +20,12 @@ export const users = pgTable("Users", {
 
 export const domains = pgTable("Domains", {
   id: uuid("id").primaryKey().defaultRandom(),
-  userid: uuid("userid")
+  userId: uuid("user_id")
     .notNull()
     .references(() => users.id),
+  projectId: uuid("project_id")
+    .notNull()
+    .references(() => projects.id, { onDelete: "cascade" }),
   url: varchar("url", { length: 255 }).notNull(),
   checkInterval: integer("check_interval").notNull().default(60), // in seconds
   timeout: integer("timeout").notNull().default(5000), // in milliseconds
@@ -43,4 +46,16 @@ export const logs = pgTable("Logs", {
   errorMessage: text("error_message"),
   isSuccess: boolean("is_success").notNull(),
   createdAt: timestamp("created_at").defaultNow().notNull(),
+});
+
+export const projects = pgTable("Projects", {
+  id: uuid("id").primaryKey().defaultRandom(),
+  userId: uuid("user_id")
+    .notNull()
+    .references(() => users.id),
+  name: varchar("name", { length: 255 }).notNull(),
+  services_up: integer("services_up").notNull().default(0),
+  services_down: integer("services_down").notNull().default(0),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+  updatedAt: timestamp("updated_at").defaultNow().notNull(),
 });
