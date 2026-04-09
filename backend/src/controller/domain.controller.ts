@@ -19,6 +19,7 @@ export class DomainController {
       const { url, checkInterval, timeout } = createDomainSchema.parse(
         req.body,
       );
+
       const { projectId } = projectParamSchema.parse(req.params);
       const userId = req.user?.id;
 

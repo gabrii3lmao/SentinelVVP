@@ -54,8 +54,6 @@ export const projects = pgTable("Projects", {
     .notNull()
     .references(() => users.id),
   name: varchar("name", { length: 255 }).notNull(),
-  services_up: integer("services_up").notNull().default(0),
-  services_down: integer("services_down").notNull().default(0),
   createdAt: timestamp("created_at").defaultNow().notNull(),
   updatedAt: timestamp("updated_at").defaultNow().notNull(),
 });
